@@ -1,0 +1,3 @@
+name: Eighteen
+version: ${project.version}
+main: com.github.mamizu0312.eighteen.Eighteen

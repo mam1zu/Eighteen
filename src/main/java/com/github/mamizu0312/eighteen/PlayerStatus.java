@@ -9,10 +9,21 @@ public class PlayerStatus {
     public void putPs(UUID uuid, String status) {
         this.ps.put(uuid, status);
     }
+    public void removePs(UUID uuid) {
+        this.ps.remove(uuid);
+    }
 
     public boolean isStatusMenu(UUID uuid) {
         if(ps.containsKey(uuid)) {
             if(ps.get(uuid) == "menu") {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isStatusGame(UUID uuid) {
+        if(ps.containsKey(uuid)) {
+            if(ps.get(uuid) == "inGameCOM") {
                 return true;
             }
         }

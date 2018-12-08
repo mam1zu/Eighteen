@@ -29,7 +29,7 @@ public class EighteenCommandManager extends JavaPlugin {
         }
         if(args.length == 0) {
             Inventory inv = Bukkit.createInventory(null, 9, prefix);
-            ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1, (short) 1);
+            ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1, (short)1);
             ItemMeta itemm = item.getItemMeta();
             itemm.setDisplayName("プレイ");
             itemm.setUnbreakable(true);
@@ -61,7 +61,11 @@ public class EighteenCommandManager extends JavaPlugin {
                 return true;
             }
             if(args[0].equalsIgnoreCase("COM")) {
-                //COMとの対戦
+                new EighteenBattleManager().onGameCOM(p);
+                PlayerStatus ps = new PlayerStatus();
+                ps.removePs(p.getUniqueId());
+                ps.putPs(p.getUniqueId(), "inGameCOM");
+                return true;
             }
             //プレイヤーとの対戦
         }

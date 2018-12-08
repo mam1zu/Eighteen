@@ -33,6 +33,29 @@ public class EighteenEvent implements Listener {
             }
             p.closeInventory();
         }
+        if(ps.isStatusGame(e.getWhoClicked().getUniqueId())) {
+            e.setCancelled(true);
+            if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
+                return;
+            }
+            Player p = (Player) e.getWhoClicked();
+            if(e.getSlot() == 3) {
+                new EighteenBattleManager().backround++;
+            }
+            if(e.getSlot() == 12) {
+                EighteenBattleManager ebm = new EighteenBattleManager();
+                ebm.p1Finger = ebm.p1Finger - 2;
+                ebm.p1putoutFinger = 2;
+                ebm.backround++;
+            }
+            if(e.getSlot() == 21) {
+                EighteenBattleManager ebm = new EighteenBattleManager();
+                ebm.p1Finger = ebm.p1Finger - 5;
+                ebm.p1putoutFinger= 5;
+                ebm.backround++;
+            }
+
+        }
     }
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {

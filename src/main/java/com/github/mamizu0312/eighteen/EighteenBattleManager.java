@@ -12,17 +12,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 
 public class EighteenBattleManager extends JavaPlugin {
     int p1Finger;
     int COMFinger;
+    int p1putoutFinger;
+    int COMputoutFinger;
 
     int p1Score;
     int COMScore;
-
+    int p1LastScore;
+    int COMLastScore;
+    int round = 1;
+    int backround;
     public void onGameCOM(Player p) {
-
+        p1Finger = 18;
+        COMFinger = 18;
         Inventory inv = Bukkit.createInventory(null, 27, p.getName()+" VS COM");
         ItemStack item = new ItemStack(Material.STONE, 1, (short)1);
         ItemMeta itemm = item.getItemMeta();
@@ -70,5 +78,101 @@ public class EighteenBattleManager extends JavaPlugin {
         COMSkullMeta.setLore(COMSkullLore);
         COMSkull.setItemMeta(COMSkullMeta);
         inv.setItem(8, COMSkull);
+
+        ItemStack item4 = new ItemStack(Material.WATCH, 1, (short)1);
+        ItemMeta itemm4 = item4.getItemMeta();
+        itemm4.setDisplayName(round + "回戦");
+        item4.setItemMeta(itemm4);
+        inv.setItem(26, item4);
+        p.openInventory(inv);
+
+        if(backround / 2 == 0) {
+            if(backround == 24) {
+                p1LastScore = p1Score - p1Finger;
+                COMLastScore = COMScore - COMFinger;
+                if(p1LastScore > COMLastScore) {
+                    new PlayerStatus().removePs(p.getUniqueId());
+                    p.sendMessage("おめでとうございます！あなたは You:"+ p1LastScore +":"+COMLastScore+":COM でCOMに勝利しました！" );
+                } else {
+                    new PlayerStatus().removePs(p.getUniqueId());
+                    p.sendMessage("あなたは You:"+p1LastScore + ":"+COMLastScore + ":COM でCOMに敗北しました...");
+                }
+            }
+            switch (p1putoutFinger) {
+                case 0:
+                    switch(COMputoutFinger) {
+                        case 0:
+                            round++;
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            break;
+                        case 2:
+                            p1Score++;
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            break;
+                        case 5:
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            COMScore++;
+                            break;
+                    }
+                case 2:
+                    switch(COMputoutFinger) {
+                        case 0:
+                            COMScore++;
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            round++;
+                            break;
+                        case 2:
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            round++;
+                            break;
+                        case 5:
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            p1Score++;
+                            round++;
+                            break;
+                    }
+                case 5:
+                    switch(COMputoutFinger) {
+                        case 0:
+                            p1Score++;
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            round++;
+                            break;
+                        case 2:
+                            COMScore++;
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            round++;
+                            break;
+                        case 5:
+                            p1putoutFinger = 0;
+                            COMputoutFinger = 0;
+                            round++;
+                            break;
+                    }
+            }
+        }
+    }
+
+    public int RandomMathMaker() {
+        Random random = new Random();
+        int rm = random.nextInt(2);
+        if(rm == 0) {
+            return 0;
+        }
+        if(rm == 1) {
+            return 2;
+        }
+        if(rm == 2) {
+            return 5;
+        }
+        return 0;
     }
 }

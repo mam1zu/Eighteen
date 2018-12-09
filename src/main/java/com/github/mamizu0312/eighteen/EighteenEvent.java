@@ -12,7 +12,11 @@ public class EighteenEvent implements Listener {
     PlayerStatus ps = new PlayerStatus();
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent e) {
-
+        if(ps.isStatusGameCOM(e.getPlayer().getUniqueId())) {
+            Player p = (Player) e.getPlayer();
+            new PlayerStatus().removePs(p.getUniqueId());
+            p.sendMessage("試合を放棄しました");
+        }
     }
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -33,7 +37,7 @@ public class EighteenEvent implements Listener {
             }
             p.closeInventory();
         }
-        if(ps.isStatusGame(e.getWhoClicked().getUniqueId())) {
+        if(ps.isStatusGameCOM(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
             if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
                 return;

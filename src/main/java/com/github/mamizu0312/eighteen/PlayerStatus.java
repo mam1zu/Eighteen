@@ -21,7 +21,7 @@ public class PlayerStatus {
         }
         return false;
     }
-    public boolean isStatusGame(UUID uuid) {
+    public boolean isStatusGameCOM(UUID uuid) {
         if(ps.containsKey(uuid)) {
             if(ps.get(uuid) == "inGameCOM") {
                 return true;

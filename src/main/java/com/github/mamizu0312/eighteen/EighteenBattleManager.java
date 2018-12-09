@@ -17,8 +17,8 @@ import java.util.UUID;
 
 
 public class EighteenBattleManager extends JavaPlugin {
-    int p1Finger;
-    int COMFinger;
+    int p1Finger = 18;
+    int COMFinger = 18;
     int p1putoutFinger;
     int COMputoutFinger;
 
@@ -29,8 +29,6 @@ public class EighteenBattleManager extends JavaPlugin {
     int round = 1;
     int backround;
     public void onGameCOM(Player p) {
-        p1Finger = 18;
-        COMFinger = 18;
         Inventory inv = Bukkit.createInventory(null, 27, p.getName()+" VS COM");
         ItemStack item = new ItemStack(Material.STONE, 1, (short)1);
         ItemMeta itemm = item.getItemMeta();
@@ -85,7 +83,32 @@ public class EighteenBattleManager extends JavaPlugin {
         item4.setItemMeta(itemm4);
         inv.setItem(26, item4);
         p.openInventory(inv);
-
+        Random r = new Random();
+        if (COMFinger < 2) {
+            backround++;
+        }
+        if (COMFinger < 5) {
+            int putout = r.nextInt(2);
+            if (putout == 0) {
+                backround++;
+            }
+            if (putout == 2) {
+                COMputoutFinger = 2;
+                backround++;
+            }
+        }
+        int putout = r.nextInt(3);
+        if (putout == 0) {
+            backround++;
+        }
+        if (putout == 1) {
+            COMFinger = 2;
+            backround++;
+        }
+        if (putout == 2) {
+            COMFinger = 5;
+            backround++;
+        }
         if(backround / 2 == 0) {
             if(backround == 24) {
                 p1LastScore = p1Score - p1Finger;
@@ -93,34 +116,54 @@ public class EighteenBattleManager extends JavaPlugin {
                 if(p1LastScore > COMLastScore) {
                     new PlayerStatus().removePs(p.getUniqueId());
                     p.sendMessage("おめでとうございます！あなたは You:"+ p1LastScore +":"+COMLastScore+":COM でCOMに勝利しました！" );
+                    p.closeInventory();
                 } else {
                     new PlayerStatus().removePs(p.getUniqueId());
                     p.sendMessage("あなたは You:"+p1LastScore + ":"+COMLastScore + ":COM でCOMに敗北しました...");
+                    p.closeInventory();
                 }
             }
             switch (p1putoutFinger) {
                 case 0:
                     switch(COMputoutFinger) {
                         case 0:
-                            round++;
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
+                            round++;
                             break;
                         case 2:
-                            p1Score++;
+                            if(isRound6or10()) {
+                                p1Score += 2;
+                            } else {
+                                p1Score++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
+                            round++;
                             break;
                         case 5:
+                            if(isRound6or10()) {
+                                COMScore += 2;
+                            } else {
+                                COMScore++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
-                            COMScore++;
+                            round++;
                             break;
                     }
                 case 2:
+                    if(!(p1Finger >= 2)) {
+                        p.sendMessage("指の数が足りません！");
+                        return;
+                    }
                     switch(COMputoutFinger) {
                         case 0:
-                            COMScore++;
+                            if(isRound6or10()) {
+                                COMScore+=2;
+                            } else {
+                                COMScore++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
                             round++;
@@ -131,22 +174,38 @@ public class EighteenBattleManager extends JavaPlugin {
                             round++;
                             break;
                         case 5:
+                            if(isRound6or10()) {
+                                p1Score+=2;
+                            } else {
+                                p1Score++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
-                            p1Score++;
                             round++;
                             break;
                     }
                 case 5:
+                    if(!(p1Finger >= 5)) {
+                        p.sendMessage("指の数が足りません！");
+                        return;
+                    }
                     switch(COMputoutFinger) {
                         case 0:
-                            p1Score++;
+                            if(isRound6or10()) {
+                                p1Score+=2;
+                            } else {
+                                p1Score++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
                             round++;
                             break;
                         case 2:
-                            COMScore++;
+                            if(isRound6or10()) {
+                                COMScore+=2;
+                            } else {
+                                COMScore++;
+                            }
                             p1putoutFinger = 0;
                             COMputoutFinger = 0;
                             round++;
@@ -160,19 +219,10 @@ public class EighteenBattleManager extends JavaPlugin {
             }
         }
     }
-
-    public int RandomMathMaker() {
-        Random random = new Random();
-        int rm = random.nextInt(2);
-        if(rm == 0) {
-            return 0;
+    public boolean isRound6or10() {
+        if(round == 6 || round == 10) {
+            return true;
         }
-        if(rm == 1) {
-            return 2;
-        }
-        if(rm == 2) {
-            return 5;
-        }
-        return 0;
+        return false;
     }
 }

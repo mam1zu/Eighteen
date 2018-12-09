@@ -5,16 +5,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import com.github.mamizu0312.eighteen.PlayerStatus;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EighteenEvent implements Listener {
-    PlayerStatus ps = new PlayerStatus();
+    PlayerStatus ps;
+    EighteenBattleManager ebm;
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent e) {
         if(ps.isStatusGameCOM(e.getPlayer().getUniqueId())) {
             Player p = (Player) e.getPlayer();
-            new PlayerStatus().removePs(p.getUniqueId());
+            ps.ps.remove(p.getUniqueId());
             p.sendMessage("試合を放棄しました");
         }
     }
@@ -44,7 +43,7 @@ public class EighteenEvent implements Listener {
             }
             Player p = (Player) e.getWhoClicked();
             if(e.getSlot() == 3) {
-                new EighteenBattleManager().backround++;
+                ebm.backround++;
             }
             if(e.getSlot() == 12) {
                 EighteenBattleManager ebm = new EighteenBattleManager();
@@ -60,10 +59,6 @@ public class EighteenEvent implements Listener {
             }
 
         }
-    }
-    @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
-
     }
 
 }

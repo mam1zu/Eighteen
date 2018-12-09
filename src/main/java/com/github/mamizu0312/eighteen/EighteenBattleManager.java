@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class EighteenBattleManager extends JavaPlugin {
+public class EighteenBattleManager {
     int p1Finger = 18;
     int COMFinger = 18;
     int p1putoutFinger;
@@ -28,6 +28,8 @@ public class EighteenBattleManager extends JavaPlugin {
     int COMLastScore;
     int round = 1;
     int backround;
+
+    PlayerStatus ps;
     public void onGameCOM(Player p) {
         Inventory inv = Bukkit.createInventory(null, 27, p.getName()+" VS COM");
         ItemStack item = new ItemStack(Material.STONE, 1, (short)1);
@@ -114,11 +116,11 @@ public class EighteenBattleManager extends JavaPlugin {
                 p1LastScore = p1Score - p1Finger;
                 COMLastScore = COMScore - COMFinger;
                 if(p1LastScore > COMLastScore) {
-                    new PlayerStatus().removePs(p.getUniqueId());
+                    ps.ps.remove(p.getUniqueId());
                     p.sendMessage("おめでとうございます！あなたは You:"+ p1LastScore +":"+COMLastScore+":COM でCOMに勝利しました！" );
                     p.closeInventory();
                 } else {
-                    new PlayerStatus().removePs(p.getUniqueId());
+                    ps.ps.remove(p.getUniqueId());
                     p.sendMessage("あなたは You:"+p1LastScore + ":"+COMLastScore + ":COM でCOMに敗北しました...");
                     p.closeInventory();
                 }

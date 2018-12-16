@@ -28,9 +28,12 @@ public class EighteenBattleManager {
     int COMLastScore;
     int round = 1;
     int backround;
-
-    PlayerStatus ps;
+    String event;
+    public EighteenBattleManager(String event) {
+        this.event = event;
+    }
     public void onGameCOM(Player p) {
+        PlayerStatus ps = new PlayerStatus(p.getUniqueId(), "inGameCOM");
         Inventory inv = Bukkit.createInventory(null, 27, p.getName()+" VS COM");
         ItemStack item = new ItemStack(Material.STONE, 1, (short)1);
         ItemMeta itemm = item.getItemMeta();

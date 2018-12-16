@@ -7,7 +7,7 @@ public final class Eighteen extends JavaPlugin{
     public void onEnable() {
         getLogger().info("Enabled.");
         getCommand("eighteen").setExecutor(new EighteenCommandManager());
-        getServer().getPluginManager().registerEvents(new EighteenEvent(), this);
+        getServer().getPluginManager().registerEvents(new EighteenEvent(), hogehoge);
     }
 
     @Override

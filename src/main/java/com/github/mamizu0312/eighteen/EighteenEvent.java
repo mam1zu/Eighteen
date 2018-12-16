@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class EighteenEvent implements Listener {
-    PlayerStatus ps;
-    EighteenBattleManager ebm;
+    PlayerStatus ps = new PlayerStatus("inEighteenEvent");
+    EighteenBattleManager ebm = new EighteenBattleManager("inEighteenEvent");
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent e) {
         if(ps.isStatusGameCOM(e.getPlayer().getUniqueId())) {
@@ -46,13 +46,11 @@ public class EighteenEvent implements Listener {
                 ebm.backround++;
             }
             if(e.getSlot() == 12) {
-                EighteenBattleManager ebm = new EighteenBattleManager();
                 ebm.p1Finger = ebm.p1Finger - 2;
                 ebm.p1putoutFinger = 2;
                 ebm.backround++;
             }
             if(e.getSlot() == 21) {
-                EighteenBattleManager ebm = new EighteenBattleManager();
                 ebm.p1Finger = ebm.p1Finger - 5;
                 ebm.p1putoutFinger= 5;
                 ebm.backround++;

@@ -7,7 +7,7 @@ import java.util.UUID;
 public class PlayerStatus {
     UUID uuid;
     String status;
-    public HashMap<UUID, String> ps = new HashMap<UUID, String>();
+
     public PlayerStatus(UUID uuid, String status) {
         this.uuid = uuid;
         this.status = status;
@@ -15,17 +15,9 @@ public class PlayerStatus {
     public PlayerStatus(String status) {
         this.status = status;
     }
-    public boolean isStatusMenu(UUID uuid) {
-        if(ps.containsKey(uuid)) {
-            if(ps.get(uuid) == "menu") {
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean isStatusGameCOM(UUID uuid) {
-        if(ps.containsKey(uuid)) {
-            if(ps.get(uuid) == "inGameCOM") {
+    public static boolean isStatusGameCOM(UUID uuid) {
+        if(Eighteen.ps.containsKey(uuid)) {
+            if(Eighteen.ps.get(uuid) == "inGameCOM") {
                 return true;
             }
         }

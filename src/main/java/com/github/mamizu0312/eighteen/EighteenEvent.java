@@ -7,24 +7,34 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class EighteenEvent implements Listener {
-    PlayerStatus ps = new PlayerStatus("inEighteenEvent");
     EighteenBattleManager ebm = new EighteenBattleManager("inEighteenEvent");
     @EventHandler
     public void onCloseInventory(InventoryCloseEvent e) {
-        if(ps.isStatusGameCOM(e.getPlayer().getUniqueId())) {
+        if(e.getPlayer() == null) {
+            return;
+        }
+        if(Eighteen.ps.get(e.getPlayer().getUniqueId()).equalsIgnoreCase("menu")) {
             Player p = (Player) e.getPlayer();
-            ps.ps.remove(p.getUniqueId());
+            Eighteen.ps.remove(p.getUniqueId());
+        }
+        if(Eighteen.ps.get(e.getPlayer().getUniqueId()).equalsIgnoreCase("inGameCOM")) {
+            Player p = (Player) e.getPlayer();
+            Eighteen.ps.remove(p.getUniqueId());
             p.sendMessage("試合を放棄しました");
         }
+
     }
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if(ps.isStatusMenu(e.getWhoClicked().getUniqueId())) {
+        Player p = (Player)e.getWhoClicked();
+        if(p == null || e.getClickedInventory() == null) {
+            return;
+        }
+        if(Eighteen.ps.get(p.getUniqueId()).equalsIgnoreCase("menu")) {
             e.setCancelled(true);
             if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
                 return;
             }
-            Player p = (Player) e.getWhoClicked();
             if(e.getSlot() == 0) {
                 p.sendMessage("現在準備中");
             }
@@ -36,12 +46,11 @@ public class EighteenEvent implements Listener {
             }
             p.closeInventory();
         }
-        if(ps.isStatusGameCOM(e.getWhoClicked().getUniqueId())) {
+        if(PlayerStatus.isStatusGameCOM(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
             if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
                 return;
             }
-            Player p = (Player) e.getWhoClicked();
             if(e.getSlot() == 3) {
                 ebm.backround++;
             }
@@ -55,7 +64,6 @@ public class EighteenEvent implements Listener {
                 ebm.p1putoutFinger= 5;
                 ebm.backround++;
             }
-
         }
     }
 

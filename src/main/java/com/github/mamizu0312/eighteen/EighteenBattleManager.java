@@ -33,7 +33,6 @@ public class EighteenBattleManager {
         this.event = event;
     }
     public void onGameCOM(Player p) {
-        PlayerStatus ps = new PlayerStatus(p.getUniqueId(), "inGameCOM");
         Inventory inv = Bukkit.createInventory(null, 27, p.getName()+" VS COM");
         ItemStack item = new ItemStack(Material.STONE, 1, (short)1);
         ItemMeta itemm = item.getItemMeta();
@@ -119,11 +118,11 @@ public class EighteenBattleManager {
                 p1LastScore = p1Score - p1Finger;
                 COMLastScore = COMScore - COMFinger;
                 if(p1LastScore > COMLastScore) {
-                    ps.ps.remove(p.getUniqueId());
+                    Eighteen.ps.remove(p.getUniqueId());
                     p.sendMessage("おめでとうございます！あなたは You:"+ p1LastScore +":"+COMLastScore+":COM でCOMに勝利しました！" );
                     p.closeInventory();
                 } else {
-                    ps.ps.remove(p.getUniqueId());
+                    Eighteen.ps.remove(p.getUniqueId());
                     p.sendMessage("あなたは You:"+p1LastScore + ":"+COMLastScore + ":COM でCOMに敗北しました...");
                     p.closeInventory();
                 }

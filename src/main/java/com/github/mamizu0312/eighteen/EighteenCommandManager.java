@@ -28,7 +28,6 @@ public class EighteenCommandManager implements CommandExecutor {
         }
         Player p = (Player)sender;
         if(args.length == 0) {
-            ps = new PlayerStatus(p.getUniqueId(), "menu");
             Inventory inv = Bukkit.createInventory(null, 9, prefix);
             ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1, (short)0);
             ItemMeta itemm = item.getItemMeta();
@@ -56,6 +55,7 @@ public class EighteenCommandManager implements CommandExecutor {
             inv.setItem(2, item3);
 
             p.openInventory(inv);
+            Eighteen.ps.put(p.getUniqueId(), "menu");
             return true;
         }
         if(args.length == 1) {
@@ -65,7 +65,8 @@ public class EighteenCommandManager implements CommandExecutor {
             }
             if(args[0].equalsIgnoreCase("COM")) {
                 ebm.onGameCOM(p);
-                PlayerStatus ps = new PlayerStatus(p.getUniqueId(), "inGameCOM");
+                Eighteen.ps.remove(p.getUniqueId());
+                Eighteen.ps.put(p.getUniqueId(), "inGameCOM");
                 return true;
             }
             //プレイヤーとの対戦
